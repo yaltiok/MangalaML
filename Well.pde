@@ -4,11 +4,14 @@ class Well{
   public PVector pos;
   public float size;
   public Well nextWell;
+  Game g;
+  protected boolean highLight = false;
   
   
-  public Well(PVector pos, float size){
+  public Well(PVector pos, float size, Game g){
     this.pos = pos;
     this.size = size;
+    this.g = g;
     Reset();
   }
   
@@ -20,7 +23,7 @@ class Well{
   }
   
   public void PlayWell(){
-    if(count <= 0) return;
+    //if(count <= 0) return;
     nextWell.IncreaseWellCount(count > 1 ? count - 1 : 1);
     if(count > 1) count = 1;
     else count = 0;

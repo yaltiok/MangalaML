@@ -7,9 +7,11 @@ class Game{
   PVector midPoint = new PVector(width/2, height/2);
   PVector playerMidPoint = new PVector(midPoint.x, midPoint.y + 100);
   PVector botMidPoint = new PVector(midPoint.x, midPoint.y - 100);
+  Bot bot;
 
   
   public Game(){
+    bot = new Bot();
     ResetSides();
   }
   
@@ -20,11 +22,37 @@ class Game{
     textAlign(CENTER, CENTER);
     String s = playerTurn ? "Player" : "Bot";
     text(s, width/2, 50);
+    
   }
   
   public void Clicked(PVector mousePos){
     if(playerTurn) playerSide.Clicked(mousePos);
-    else botSide.Clicked(mousePos);
+    else {
+      int idx = bot.Move(botSide.wells, playerSide.wells, botSide.treasure, playerSide.treasure);
+      botSide.Clicked(botSide.wells[idx].pos);
+    }
+  }
+  
+  public void GameOver(){
+    
+    String s = playerSide.GetScore() > botSide.GetScore() ? "PLAYER WON" : playerSide.GetScore() < botSide.GetScore() ? "BOT WON" : "TIE";
+    isGameInProgress = false;
+    noLoop();
+    background(52);
+    textAlign(CENTER, CENTER);
+    text(s, width/2, 100);
+    newGameButton.Show();
+    Show();
+  }
+  
+  public void HoverOver(PVector mPos){
+    
+    playerSide.ClearHighLights();
+    botSide.ClearHighLights();
+
+    playerSide.HoverOver(mPos);
+    botSide.HoverOver(mPos);
+    
   }
   
   
