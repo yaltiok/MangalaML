@@ -29,7 +29,7 @@ class Game{
     if(playerTurn) playerSide.Clicked(mousePos);
     else {
       int idx = bot.Move(botSide.wells, playerSide.wells, botSide.treasure, playerSide.treasure);
-      botSide.Clicked(botSide.wells[idx].pos);
+      if(idx >= 0) botSide.Clicked(botSide.wells[idx].pos);
     }
   }
   

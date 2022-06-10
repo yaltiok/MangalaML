@@ -80,20 +80,27 @@ class Side{
     }
     
     
-    int total = 0;
+    int myTotal = 0;
     for(int i = 0; i < wells.length; i++){
-      total += wells[i].count;
+      myTotal += wells[i].count;
+    }
+    int oppositionTotal = 0;
+    for(int i = 0; i < opposition.wells.length; i++){
+      oppositionTotal += opposition.wells[i].count;
     }
     
-    if(total <= 0){
+    if(myTotal <= 0){
       for(int i = 0; i < wells.length; i++){
         treasure.count += opposition.wells[i].count;
         opposition.wells[i].count = 0;
       }
-      
-      
       g.GameOver();
-      
+    }else if(oppositionTotal <= 0){
+      for(int i = 0; i < wells.length; i++){
+        opposition.treasure.count += wells[i].count;
+        wells[i].count = 0;
+      }
+      g.GameOver();
     }
   }
   
