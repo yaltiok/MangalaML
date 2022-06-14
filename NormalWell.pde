@@ -20,7 +20,7 @@ class NormalWell extends Well{
     noStroke();
     fill(0);
     textAlign(CENTER,CENTER);
-    textSize(32);
+    textSize(size/2);
     text(count, pos.x, pos.y);
   }
 }

@@ -20,9 +20,7 @@ class Bot{
     // RULE SET
     // If there is a well that ends in the treasury. Play it!
     int a = CheckFreeMove();
-    println(a);
     if(a >= 0) {
-      println("FREE MOVE");
       return a;
     }
     
@@ -33,17 +31,13 @@ class Bot{
     
     if(b[0] >= 0 && c[0] >= 0){
       if(b[1] > c[1]){
-        print("EMPTY WELL IS BETTER.");
         return b[0];
       }else{
-        print("DOUBLE WELL IS BETTER.");
         return c[0];
       }
     }else if(b[0] >= 0){
-      print("EMPTY WELL IS ONLY CHOICE. " + b[0]);
       return b[0];
     }else if(c[0] >= 0){
-      print("DOUBLE WELL IS CHOICE. " + c[0]);
       return c[0];
     }
     

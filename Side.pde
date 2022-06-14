@@ -21,8 +21,10 @@ class Side{
   
   
   public void Reset(){
+    wellSize = min(xResolution, yResolution) / 7;
+    offset = 0;
     wells = new NormalWell[6];
-    treasure = new Treasury(player ? new PVector(width - 100, height/2) : new PVector(100, height/2), wellSize, g);
+    treasure = new Treasury(player ? new PVector((xResolution * (g.x + 1) - xResolution / 10), (yResolution / 2) + (yResolution * g.y)) : new PVector((xResolution * (g.x) + xResolution / 10), (yResolution / 2) + (yResolution * g.y)), wellSize, g);
     
     for(int i = 0; i < wells.length; i++){
       wells[i] = new NormalWell(GetWellPosition(middlePoint, i), wellSize, g);
@@ -60,6 +62,59 @@ class Side{
       }
     }
     if(!played) return;
+    if(Arrays.asList(opposition.wells).contains(endingWell)){
+      if(endingWell.count % 2 == 0){
+        treasure.count += endingWell.count;
+        endingWell.count = 0;
+      }
+    }
+    
+    if(Arrays.asList(wells).contains(endingWell)){
+      if(endingWell.count == 1){
+        int endingIdx = FindIndexInWells(endingWell);
+        if(endingIdx < 0) return;
+        Well opposite = opposition.wells[5 - endingIdx];
+        if(opposite.count < 1) return;
+        treasure.count += endingWell.count + opposite.count;
+        endingWell.count = 0;
+        opposite.count = 0;
+      }
+    }
+    
+    
+    int myTotal = 0;
+    for(int i = 0; i < wells.length; i++){
+      myTotal += wells[i].count;
+    }
+    int oppositionTotal = 0;
+    for(int i = 0; i < opposition.wells.length; i++){
+      oppositionTotal += opposition.wells[i].count;
+    }
+    
+    if(myTotal <= 0){
+      for(int i = 0; i < wells.length; i++){
+        treasure.count += opposition.wells[i].count;
+        opposition.wells[i].count = 0;
+      }
+      g.GameOver();
+    }else if(oppositionTotal <= 0){
+      for(int i = 0; i < wells.length; i++){
+        opposition.treasure.count += wells[i].count;
+        wells[i].count = 0;
+      }
+      g.GameOver();
+    }
+  }
+  
+  
+  public void Clicked(int idx){
+    
+    Well endingWell = new Well(new PVector(0,0), 10, g);
+   
+    endingWell = GetEndingWell(idx);
+    PlayWell(idx);
+    wells[idx].PlayWell();
+    
     if(Arrays.asList(opposition.wells).contains(endingWell)){
       if(endingWell.count % 2 == 0){
         treasure.count += endingWell.count;
